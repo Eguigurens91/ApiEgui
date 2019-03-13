@@ -3,7 +3,7 @@ var router = express.Router();
 
 function initEmployee(db) {
   var empModel = require('./employeeModel')(db);
-  var mongoModel = require('./mongoModel')
+  var jsonModel = require ('/jsonModel')(db); 
 
   //rutas a implementar
   // metodo     ruta                     body
@@ -41,7 +41,7 @@ function initEmployee(db) {
   });
 
   router.get('/byid/:id', (req, res, next)=>{
-    mongoModel.getEmploById(req.params.Emploid, (err, emploDoc)=>{
+    empModel.getEmploById(req.params.Emploid, (err, emploDoc)=>{
       if(err){
         console.log(err);
         return res.status(500).json({"error":"Error al obtener el empleado"});
@@ -51,7 +51,7 @@ function initEmployee(db) {
   }); 
 
   router.get('/bycompany/:company', (req, res, next)=>{
-    mongoModel.getEmployeesByCompany(req.params.companyId, (err, companyDoc)=>{
+   empModel.getEmployeesByCompany(req.params.companyId, (err, companyDoc)=>{
       if(err){
         console.log(err);
         return res.status(500).json({"error":"Error al obtener el empleado por compania"});
@@ -61,7 +61,7 @@ function initEmployee(db) {
   }); 
 
   router.get('/bytags/:tag', (req, res, next)=>{
-    mongoModel.searchByTag((req.params.tag || '').split('_'), (err, docs)=>{
+    empModel.searchByTag((req.params.tag || '').split('_'), (err, docs)=>{
       if(err){
         console.log(err);
         return res.status(500).json({"error":"No se encontro la data"});
@@ -73,7 +73,7 @@ function initEmployee(db) {
   
   router.delete('/delete/:employeedId', function(req, res, next){
     var _employeedId = req.params.employeedId;
-    mongoModel.deleteById(_employeedId, (err, result)=>{
+    empModel.deleteById(_employeedId, (err, result)=>{
       if(err){
         return res.status(500).json({"error":"No se pudo eliminar dato"});
       }
